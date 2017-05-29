@@ -10,10 +10,23 @@
     <string name="wind">Wind:</string>
     <string name="snow_volume">Snow volume:</string>
     <string name="celcius_superscript">o</string>
+    <string name="open_weather_api_endpoint">http://api.openweathermap.org</string>
+    <string name="city_id_athens">8133876</string>
+    <string name="open_weather_app_id">5587b1ee582f0fe0ac7f07c177c200a5</string>
+    <string name="something_went_wrong">Something went wrong! Please retry...</string>
+    <string name="retry">Retry</string>
+    <string name="percentage">%1$.2f\%</string>
+    <string name="percentage_int">%1$d\%</string>
+    <string name="pressure_with_units">%1$.2f hPa</string>
+    <string name="volume_with_units">%1$.2f mm</string>
+    <string name="wind_info">%1$s - %2$.2f m/s</string>
+    <string name="icon_url">http://openweathermap.org/img/w/%1$s.png</string>
+    <string name="hi_lo_temp">Hi:%1$.2f Lo:%2$.2f</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 
     <string-array name="display_modes">
-        <item>Average (Day)</item>
-        <item>Average (Night)</item>
+        <item>Average</item>
         <item>Timeline</item>
 
     </string-array>

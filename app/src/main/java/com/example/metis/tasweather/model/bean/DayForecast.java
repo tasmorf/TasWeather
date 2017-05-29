@@ -1,4 +1,4 @@
-package com.example.metis.tasweather;
+package com.example.metis.tasweather.model.bean;
 
 import android.util.SparseArray;
 
@@ -8,13 +8,11 @@ import android.util.SparseArray;
 public class DayForecast {
     private String title;
     private WeatherInfo averageDayWeatherInfo;
-    private WeatherInfo averageNightWeatherInfo;
     private SparseArray<WeatherInfo> hourlyWeatherInfos;
 
     private DayForecast(Builder builder) {
         title = builder.title;
         averageDayWeatherInfo = builder.averageDayWeatherInfo;
-        averageNightWeatherInfo = builder.averageNightWeatherInfo;
         hourlyWeatherInfos = builder.hourlyWeatherInfos;
     }
 
@@ -30,10 +28,6 @@ public class DayForecast {
         return averageDayWeatherInfo;
     }
 
-    public WeatherInfo getAverageNightWeatherInfo() {
-        return averageNightWeatherInfo;
-    }
-
     public SparseArray<WeatherInfo> getHourlyWeatherInfos() {
         return hourlyWeatherInfos;
     }
@@ -41,7 +35,6 @@ public class DayForecast {
     public static final class Builder {
         private String title;
         private WeatherInfo averageDayWeatherInfo;
-        private WeatherInfo averageNightWeatherInfo;
         private SparseArray<WeatherInfo> hourlyWeatherInfos;
 
         private Builder() {
@@ -54,11 +47,6 @@ public class DayForecast {
 
         public Builder averageDayWeatherInfo(WeatherInfo val) {
             averageDayWeatherInfo = val;
-            return this;
-        }
-
-        public Builder averageNightWeatherInfo(WeatherInfo val) {
-            averageNightWeatherInfo = val;
             return this;
         }
 

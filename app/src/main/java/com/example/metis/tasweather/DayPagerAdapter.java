@@ -1,13 +1,12 @@
 package com.example.metis.tasweather;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.metis.tasweather.model.bean.DayForecast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +17,6 @@ import java.util.List;
 public class DayPagerAdapter extends PagerAdapter {
 
     private List<DayForecast> dayForecasts = new ArrayList<>();
-
-    public DayPagerAdapter() {
-
-    }
 
     @Override
     public int getCount() {

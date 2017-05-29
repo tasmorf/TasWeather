@@ -1,4 +1,4 @@
-package com.example.metis.tasweather;
+package com.example.metis.tasweather.model.bean;
 
 public class WeatherInfo {
     private final String mainTemp;

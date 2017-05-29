@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,11 +12,12 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.metis.tasweather.model.bean.DayForecast;
+import com.example.metis.tasweather.model.bean.WeatherInfo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import butterknife.OnItemSelected;
 
 /**
@@ -105,19 +104,20 @@ public class DailyForecastLayout extends ScrollView implements RatingBar.OnRatin
     private void resetForecastInfo() {
         WeatherInfo weatherInfo;
         switch (currentDisplayMode) {
-            case DisplayMode.AVERAGE_NIGHT:
-                weatherInfo = forecast.getAverageNightWeatherInfo();
-                break;
             case DisplayMode.TIMELINE:
                 weatherInfo = forecast.getHourlyWeatherInfos().get(timelineChooser.getProgress());
                 break;
-            case DisplayMode.AVERAGE_DAY:
+            case DisplayMode.AVERAGE:
             default:
                 weatherInfo = forecast.getAverageDayWeatherInfo();
                 break;
         }
         mainTempText.setText(weatherInfo.getMainTemp());
-        Picasso.with(getContext()).load(weatherInfo.getIconUrl()).into(weatherIcon);
+        tempHiLoText.setText(weatherInfo.getHiLoTemp());
+        String iconUrl = weatherInfo.getIconUrl();
+        if(!TextUtils.isEmpty(iconUrl)) {
+            Picasso.with(getContext()).load(iconUrl).into(weatherIcon);
+        }
         tempHiLoText.setText(weatherInfo.getHiLoTemp());
 
         handleOptionalStrip(weatherInfo.getCloudiness(), infoStripCloudiness, cloudText);
