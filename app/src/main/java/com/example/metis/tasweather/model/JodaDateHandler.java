@@ -31,21 +31,21 @@ public class JodaDateHandler implements DateHandler {
         } else if (offset == 1) {
             return resources.getString(R.string.tomorrow);
         }
-        return DateTimeFormat.forPattern("EEEE").print(new LocalDate().plusDays(offset));
+        return DateTimeFormat.forPattern("EEEE").print(DateTime.now().plusDays(offset));
     }
 
     @Override
-    public int getHourOffsetFromStartOfDay(long timestamp) {
-        return new DateTime(timestamp * 1000, DateTimeZone.UTC).getHourOfDay();
-    }
-
-    @Override
-    public String getTimeStringForHour(int hour) {
-        return DateTimeFormat.forPattern("HH:mm").withZoneUTC().print(hour * MILLIS_IN_HOUR);
+    public String getTimeStringForTimeStamp(long timeStamp) {
+        return DateTimeFormat.forPattern("HH:mm").print(new DateTime(timeStamp * 1000, DateTimeZone.UTC).getHourOfDay() * MILLIS_IN_HOUR);
     }
 
     @Override
     public int getCurrentHourOfDay() {
         return DateTime.now().getHourOfDay();
+    }
+
+    @Override
+    public boolean isBeforeNow(long timestamp) {
+        return DateTime.now().isAfter(new DateTime(timestamp * 1000, DateTimeZone.UTC));
     }
 }

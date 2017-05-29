@@ -1,8 +1,6 @@
 package com.example.metis.tasweather.module;
 
-import android.support.v4.view.PagerAdapter;
-
-import com.example.metis.tasweather.DayPagerAdapter;
+import com.example.metis.tasweather.ui.DayPagerAdapter;
 
 public class PagerAdapterModule {
 

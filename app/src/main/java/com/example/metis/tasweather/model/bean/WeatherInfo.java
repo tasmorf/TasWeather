@@ -9,6 +9,7 @@ public class WeatherInfo {
     private final String snowVolume;
     private final String pressureInfo;
     private final String humidity;
+    private final String time;
 
     private WeatherInfo(Builder builder) {
         mainTemp = builder.mainTemp;
@@ -19,12 +20,12 @@ public class WeatherInfo {
         snowVolume = builder.snowVolume;
         pressureInfo = builder.pressureInfo;
         humidity = builder.humidity;
+        time = builder.time;
     }
 
     public static Builder newBuilder() {
         return new Builder();
     }
-
 
     public String getMainTemp() {
         return mainTemp;
@@ -58,6 +59,10 @@ public class WeatherInfo {
         return humidity;
     }
 
+    public String getTime() {
+        return time;
+    }
+
     public static final class Builder {
         private String mainTemp;
         private String iconUrl;
@@ -67,6 +72,7 @@ public class WeatherInfo {
         private String snowVolume;
         private String pressureInfo;
         private String humidity;
+        private String time;
 
         private Builder() {
         }
@@ -108,6 +114,11 @@ public class WeatherInfo {
 
         public Builder humidity(String val) {
             humidity = val;
+            return this;
+        }
+
+        public Builder time(String val) {
+            time = val;
             return this;
         }
 

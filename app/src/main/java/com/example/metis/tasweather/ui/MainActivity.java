@@ -1,4 +1,4 @@
-package com.example.metis.tasweather;
+package com.example.metis.tasweather.ui;
 
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.ForecastService;
 import com.example.metis.tasweather.model.bean.Forecast;
 

@@ -1,7 +1,6 @@
 package com.example.metis.tasweather.model;
 
 import android.content.res.Resources;
-import android.util.SparseArray;
 
 import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.bean.DayForecast;
@@ -16,7 +15,6 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -52,7 +50,8 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
                     .isToday(i == 0);
             List<WeatherInfo> weatherInfoList = new ArrayList<>();
             for (ServerWeatherDataPoint serverWeatherDataPoint : serverForecast.getWeatherDataPoints()) {
-                if (dateHandler.getDaysOffsetForTimestamp(serverWeatherDataPoint.getTimestamp()) != i) {
+                if (dateHandler.getDaysOffsetForTimestamp(serverWeatherDataPoint.getTimestamp()) != i
+                        || dateHandler.isBeforeNow(serverWeatherDataPoint.getTimestamp())) {
                     // ignore data points not within the day we care about
                     continue;
                 }
@@ -63,6 +62,7 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
 
                 WeatherInfo.Builder weatherInfoBuilder = WeatherInfo.newBuilder()
                         .mainTemp(String.format("%.1f", temp))
+                        .time(dateHandler.getTimeStringForTimeStamp(serverWeatherDataPoint.getTimestamp()))
                         .iconUrl(resources.getString(R.string.icon_url, serverWeatherDataPoint.getOverallWeather().get(0).getIcon()))
                         .cloudiness(resources.getString(R.string.percentage_int, cloudiness))
                         .humidity(resources.getString(R.string.percentage_int, humidity))

@@ -1,4 +1,4 @@
-package com.example.metis.tasweather;
+package com.example.metis.tasweather.ui;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -6,15 +6,14 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.DateHandler;
 import com.example.metis.tasweather.model.bean.DayForecast;
 import com.example.metis.tasweather.model.bean.WeatherInfo;
-import com.example.metis.tasweather.module.DateHandlerModule;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -92,17 +91,19 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
     public void setForecast(DayForecast forecast) {
         this.forecast = forecast;
         timelineChooser.setMax(HOURS_IN_DAY / STEP_SIZE - 1);
-        int todaysProgress = dateHandler.getCurrentHourOfDay() / STEP_SIZE;
-        timelineChooser.setProgress(todaysProgress);
+        if (forecast.isToday()) {
+            int todaysProgress = dateHandler.getCurrentHourOfDay() / STEP_SIZE;
+            timelineChooser.setProgress(todaysProgress);
+        }
     }
 
     private void resetForecastInfo(int value) {
+        WeatherInfo weatherInfo = forecast.getHourlyWeatherInfos().get(value);
         if (forecast.isToday() && value == 0) {
             timelineLabel.setText(getResources().getString(R.string.now));
         } else {
-            timelineLabel.setText(dateHandler.getTimeStringForHour(value * STEP_SIZE));
+            timelineLabel.setText(weatherInfo.getTime());
         }
-        WeatherInfo weatherInfo = forecast.getHourlyWeatherInfos().get(value);
         mainTempText.setText(weatherInfo.getMainTemp());
         String iconUrl = weatherInfo.getIconUrl();
         if (!TextUtils.isEmpty(iconUrl)) {

@@ -15,18 +15,12 @@ public interface DateHandler {
     String getDayOfWeekFromOffset(int offset);
 
     /**
-     * Will return 0, 3, 6, 9, 12, 15, 18, 21 depending on how long this is
-     * from the start of a day
-     * @param timestamp
-     */
-    int getHourOffsetFromStartOfDay(long timestamp);
-
-    /**
      * Will return a time liek xx:xx based on the  hour
-     * @param hour
+     * @param timeStamp
      */
-    String getTimeStringForHour(int hour);
+    String getTimeStringForTimeStamp(long timeStamp);
 
     int getCurrentHourOfDay();
 
+    boolean isBeforeNow(long timestamp);
 }
