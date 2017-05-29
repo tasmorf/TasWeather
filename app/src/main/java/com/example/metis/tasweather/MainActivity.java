@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.SparseArray;
 
 import java.util.Arrays;
 
@@ -38,21 +39,36 @@ public class MainActivity extends AppCompatActivity {
         mDayPagerAdapter.setDaysForecast(Arrays.asList(DayForecast
                         .newBuilder()
                         .title("Today")
+                        .averageDayWeatherInfo(WeatherInfo.newBuilder().build())
+                        .averageNightWeatherInfo(WeatherInfo.newBuilder().build())
+                        .hourlyWeatherInfos(new SparseArray<WeatherInfo>())
                         .build(),
                 DayForecast
                         .newBuilder()
+                        .averageDayWeatherInfo(WeatherInfo.newBuilder().build())
+                        .averageNightWeatherInfo(WeatherInfo.newBuilder().build())
+                        .hourlyWeatherInfos(new SparseArray<WeatherInfo>())
                         .title("Tomorrow")
                         .build(),
                 DayForecast
                         .newBuilder()
+                        .averageDayWeatherInfo(WeatherInfo.newBuilder().build())
+                        .averageNightWeatherInfo(WeatherInfo.newBuilder().build())
+                        .hourlyWeatherInfos(new SparseArray<WeatherInfo>())
                         .title("Wednesday")
                         .build(),
                 DayForecast
                         .newBuilder()
+                        .averageDayWeatherInfo(WeatherInfo.newBuilder().build())
+                        .averageNightWeatherInfo(WeatherInfo.newBuilder().build())
+                        .hourlyWeatherInfos(new SparseArray<WeatherInfo>())
                         .title("Thursday")
                         .build(),
                 DayForecast
                         .newBuilder()
+                        .averageDayWeatherInfo(WeatherInfo.newBuilder().build())
+                        .averageNightWeatherInfo(WeatherInfo.newBuilder().build())
+                        .hourlyWeatherInfos(new SparseArray<WeatherInfo>())
                         .title("Friday")
                         .build()
         ));

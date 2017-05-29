@@ -17,4 +17,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="info_strip">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/spacing</item>
+        <item name="android:background">@color/colorInfoStripBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">@dimen/spacing</item>
+    </style>
+
+    <style name="info_strip_header" parent="TextAppearance.AppCompat.Large">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/spacing</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="info_strip_value" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
 </resources>

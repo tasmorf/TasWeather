@@ -2,4 +2,19 @@
     <string name="app_name">Tas Weather</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="celsius">&lt;sup&gt;\u00AE&lt;/sup&gt;</string>
+    <string name="pressure">Pressure:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="cloudiness">Cloudiness:</string>
+    <string name="rain_volume">Rain volume:</string>
+    <string name="wind">Wind:</string>
+    <string name="snow_volume">Snow volume:</string>
+    <string name="celcius_superscript">o</string>
+
+    <string-array name="display_modes">
+        <item>Average (Day)</item>
+        <item>Average (Night)</item>
+        <item>Timeline</item>
+
+    </string-array>
 </resources>

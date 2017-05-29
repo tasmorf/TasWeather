@@ -1,15 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <com.example.metis.tasweather.DailyForecastLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/display_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+
+        <RatingBar
+            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+            android:id="@+id/timeline_chooser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:max="24"
+            android:scrollbarAlwaysDrawHorizontalTrack="true"
+            android:stepSize="3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/main_temp"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="70sp"
+                tools:text="25" />
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="@string/celcius_superscript" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/weather_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/temp_hi_lo"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Hi: 10 - Low: 5" />
+
+
+        <LinearLayout
+            android:id="@+id/info_strip_cloudiness"
+            style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/cloudiness" />
+
+            <TextView
+                android:id="@+id/clouds"
+                style="@style/info_strip_value"
+                tools:text="65%" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/info_strip_rain"
+            style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/rain_volume" />
+
+            <TextView
+                android:id="@+id/rain"
+                style="@style/info_strip_value"
+                tools:text="300mm" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/info_strip_wind"
+            style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/wind" />
+
+            <TextView
+                android:id="@+id/wind"
+                style="@style/info_strip_value"
+                tools:text="NNE - 300 m/s" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/info_strip_snow"
+            style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/snow_volume" />
+
+            <TextView
+                android:id="@+id/snow"
+                style="@style/info_strip_value"
+                tools:text="400mm" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/pressure" />
+
+            <TextView
+                android:id="@+id/pressure_sea_ground"
+                style="@style/info_strip_value"
+                tools:text="Sea: 10 - Ground: 5" />
+        </LinearLayout>
+
+        <LinearLayout style="@style/info_strip">
+
+            <TextView
+                style="@style/info_strip_header"
+                android:text="@string/humidity" />
+
+            <TextView
+                android:id="@+id/humidity"
+                style="@style/info_strip_value"
+                tools:text="85%" />
+        </LinearLayout>
+    </LinearLayout>
+
 </com.example.metis.tasweather.DailyForecastLayout>
