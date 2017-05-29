@@ -14,12 +14,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/display_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-
         <RatingBar
             style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
             android:id="@+id/timeline_chooser"
@@ -58,17 +52,11 @@
 
             <ImageView
                 android:id="@+id/weather_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/temp_hi_lo"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Hi: 10 - Low: 5" />
-
 
         <LinearLayout
             android:id="@+id/info_strip_cloudiness"

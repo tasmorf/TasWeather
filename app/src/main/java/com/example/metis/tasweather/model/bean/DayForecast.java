@@ -7,12 +7,10 @@ import android.util.SparseArray;
  */
 public class DayForecast {
     private String title;
-    private WeatherInfo averageDayWeatherInfo;
     private SparseArray<WeatherInfo> hourlyWeatherInfos;
 
     private DayForecast(Builder builder) {
         title = builder.title;
-        averageDayWeatherInfo = builder.averageDayWeatherInfo;
         hourlyWeatherInfos = builder.hourlyWeatherInfos;
     }
 
@@ -24,17 +22,12 @@ public class DayForecast {
         return title;
     }
 
-    public WeatherInfo getAverageDayWeatherInfo() {
-        return averageDayWeatherInfo;
-    }
-
     public SparseArray<WeatherInfo> getHourlyWeatherInfos() {
         return hourlyWeatherInfos;
     }
 
     public static final class Builder {
         private String title;
-        private WeatherInfo averageDayWeatherInfo;
         private SparseArray<WeatherInfo> hourlyWeatherInfos;
 
         private Builder() {
@@ -42,11 +35,6 @@ public class DayForecast {
 
         public Builder title(String val) {
             title = val;
-            return this;
-        }
-
-        public Builder averageDayWeatherInfo(WeatherInfo val) {
-            averageDayWeatherInfo = val;
             return this;
         }
 

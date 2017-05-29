@@ -3,7 +3,6 @@ package com.example.metis.tasweather.model.bean;
 public class WeatherInfo {
     private final String mainTemp;
     private final String iconUrl;
-    private final String hiLoTemp;
     private final String cloudiness;
     private final String rainVolume;
     private final String windInfo;
@@ -14,7 +13,6 @@ public class WeatherInfo {
     private WeatherInfo(Builder builder) {
         mainTemp = builder.mainTemp;
         iconUrl = builder.iconUrl;
-        hiLoTemp = builder.hiLoTemp;
         cloudiness = builder.cloudiness;
         rainVolume = builder.rainVolume;
         windInfo = builder.windInfo;
@@ -34,10 +32,6 @@ public class WeatherInfo {
 
     public String getIconUrl() {
         return iconUrl;
-    }
-
-    public String getHiLoTemp() {
-        return hiLoTemp;
     }
 
     public String getCloudiness() {
@@ -67,7 +61,6 @@ public class WeatherInfo {
     public static final class Builder {
         private String mainTemp;
         private String iconUrl;
-        private String hiLoTemp;
         private String cloudiness;
         private String rainVolume;
         private String windInfo;
@@ -85,11 +78,6 @@ public class WeatherInfo {
 
         public Builder iconUrl(String val) {
             iconUrl = val;
-            return this;
-        }
-
-        public Builder hiLoTemp(String val) {
-            hiLoTemp = val;
             return this;
         }
 

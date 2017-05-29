@@ -15,8 +15,8 @@
     <string name="open_weather_app_id">5587b1ee582f0fe0ac7f07c177c200a5</string>
     <string name="something_went_wrong">Something went wrong! Please retry...</string>
     <string name="retry">Retry</string>
-    <string name="percentage">%1$.2f\%</string>
-    <string name="percentage_int">%1$d\%</string>
+    <string name="percentage">%1$.2f%%</string>
+    <string name="percentage_int">%1$d%%</string>
     <string name="pressure_with_units">%1$.2f hPa</string>
     <string name="volume_with_units">%1$.2f mm</string>
     <string name="wind_info">%1$s - %2$.2f m/s</string>
