@@ -24,6 +24,7 @@ import retrofit2.Converter;
 
 class ForecastConverter implements Converter<ResponseBody, Forecast> {
     private static final int MAX_DAYS_FORECAST = 5;
+    private static final int LAST_AVAILABLE_HOUR = 21;
     private final Gson gson;
     private final Resources resources;
     private final DateHandler dateHandler;
@@ -40,9 +41,15 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
         ServerForecast serverForecast = gson.fromJson(value.charStream(), ServerForecast.class);
         List<DayForecast> forecastList = new ArrayList<>();
 
-        for (int i = 0; i < MAX_DAYS_FORECAST; i++) {
-            DayForecast.Builder builder = DayForecast.newBuilder().title(dateHandler.getDayOfWeekFromOffset(i));
-            SparseArray<WeatherInfo> weatherSparseArray = new SparseArray<>();
+        int minIndex = 0;
+        if(dateHandler.getCurrentHourOfDay() > LAST_AVAILABLE_HOUR) {
+            minIndex = 1;
+        }
+        for (int i = minIndex; i < MAX_DAYS_FORECAST; i++) {
+            DayForecast.Builder builder = DayForecast.newBuilder()
+                    .title(dateHandler.getDayOfWeekFromOffset(i))
+                    .isToday(i == 0);
+            List<WeatherInfo> weatherInfoList = new ArrayList<>();
             for (ServerWeatherDataPoint serverWeatherDataPoint : serverForecast.getWeatherDataPoints()) {
                 if (dateHandler.getDaysOffsetForTimestamp(serverWeatherDataPoint.getTimestamp()) != i) {
                     // ignore data points not within the day we care about
@@ -76,10 +83,9 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
                     weatherInfoBuilder.windInfo(resources.getString(R.string.wind_info, direction, windInfo.getSpeed()));
                 }
                 // This data point belongs to this offset
-                int key = dateHandler.getHourOffsetFromStartOfDay(serverWeatherDataPoint.getTimestamp());
-                weatherSparseArray.put(key, weatherInfoBuilder.build());
+                weatherInfoList.add(weatherInfoBuilder.build());
             }
-            builder.hourlyWeatherInfos(weatherSparseArray);
+            builder.hourlyWeatherInfos(weatherInfoList);
             forecastList.add(builder.build());
         }
 

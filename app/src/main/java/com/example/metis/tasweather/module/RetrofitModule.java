@@ -7,7 +7,7 @@ import com.example.metis.tasweather.model.WeatherConverterFactory;
 import retrofit2.Retrofit;
 
 import static com.example.metis.tasweather.module.ApplicationModule.resources;
-import static com.example.metis.tasweather.module.DateFormatterModule.jodaDateStringFormatter;
+import static com.example.metis.tasweather.module.DateHandlerModule.jodaDateHandler;
 import static com.example.metis.tasweather.module.GsonModule.gson;
 import static com.example.metis.tasweather.module.OkHttpModule.okHttpClient;
 
@@ -30,7 +30,7 @@ public class RetrofitModule {
     }
 
     private static WeatherConverterFactory weatherConverterFactory() {
-        return new WeatherConverterFactory(gson(), resources(), jodaDateStringFormatter());
+        return new WeatherConverterFactory(gson(), resources(), jodaDateHandler());
     }
 
 }

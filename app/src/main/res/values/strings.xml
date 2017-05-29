@@ -24,6 +24,7 @@
     <string name="hi_lo_temp">Hi:%1$.2f Lo:%2$.2f</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="now">Now</string>
 
     <string-array name="display_modes">
         <item>Average</item>

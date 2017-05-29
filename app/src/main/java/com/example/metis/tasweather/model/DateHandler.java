@@ -20,4 +20,13 @@ public interface DateHandler {
      * @param timestamp
      */
     int getHourOffsetFromStartOfDay(long timestamp);
+
+    /**
+     * Will return a time liek xx:xx based on the  hour
+     * @param hour
+     */
+    String getTimeStringForHour(int hour);
+
+    int getCurrentHourOfDay();
+
 }

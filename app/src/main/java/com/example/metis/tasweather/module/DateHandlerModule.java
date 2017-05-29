@@ -6,9 +6,9 @@ import com.example.metis.tasweather.model.JodaDateHandler;
 
 import static com.example.metis.tasweather.module.ApplicationModule.resources;
 
-public class DateFormatterModule {
+public class DateHandlerModule {
 
-    public static DateHandler jodaDateStringFormatter() {
+    public static DateHandler jodaDateHandler() {
         return new JodaDateHandler(resources());
     }
 }

@@ -4,29 +4,35 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
-import android.widget.Spinner;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.metis.tasweather.model.DateHandler;
 import com.example.metis.tasweather.model.bean.DayForecast;
 import com.example.metis.tasweather.model.bean.WeatherInfo;
+import com.example.metis.tasweather.module.DateHandlerModule;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemSelected;
+
+import static com.example.metis.tasweather.module.DateHandlerModule.jodaDateHandler;
 
 /**
  * A View representing the forecast for a single day.
  */
-public class DailyForecastLayout extends ScrollView implements RatingBar.OnRatingBarChangeListener {
+public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBarChangeListener {
 
+    public static final int STEP_SIZE = 3;
+    private static final int HOURS_IN_DAY = 24;
+    @Bind(R.id.timeline_label)
+    TextView timelineLabel;
     @Bind(R.id.timeline_chooser)
-    RatingBar timelineChooser;
+    SeekBar timelineChooser;
     @Bind(R.id.weather_icon)
     ImageView weatherIcon;
     @Bind(R.id.main_temp)
@@ -52,36 +58,54 @@ public class DailyForecastLayout extends ScrollView implements RatingBar.OnRatin
     @Bind(R.id.humidity)
     TextView humidityText;
 
+    private DateHandler dateHandler;
+
     private DayForecast forecast;
 
     public DailyForecastLayout(Context context) {
         super(context);
+        init(jodaDateHandler());
     }
 
     public DailyForecastLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(jodaDateHandler());
     }
 
     public DailyForecastLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(jodaDateHandler());
+    }
+
+    private void init(DateHandler dateHandler) {
+        this.dateHandler = dateHandler;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
         ButterKnife.bind(this);
+        timelineChooser.setOnSeekBarChangeListener(this);
+        timelineChooser.setKeyProgressIncrement(STEP_SIZE);
     }
 
     public void setForecast(DayForecast forecast) {
         this.forecast = forecast;
-        resetForecastInfo();
+        timelineChooser.setMax(HOURS_IN_DAY / STEP_SIZE - 1);
+        int todaysProgress = dateHandler.getCurrentHourOfDay() / STEP_SIZE;
+        timelineChooser.setProgress(todaysProgress);
     }
 
-    private void resetForecastInfo() {
-        WeatherInfo weatherInfo = forecast.getHourlyWeatherInfos().get(timelineChooser.getProgress());
+    private void resetForecastInfo(int value) {
+        if (forecast.isToday() && value == 0) {
+            timelineLabel.setText(getResources().getString(R.string.now));
+        } else {
+            timelineLabel.setText(dateHandler.getTimeStringForHour(value * STEP_SIZE));
+        }
+        WeatherInfo weatherInfo = forecast.getHourlyWeatherInfos().get(value);
         mainTempText.setText(weatherInfo.getMainTemp());
         String iconUrl = weatherInfo.getIconUrl();
-        if(!TextUtils.isEmpty(iconUrl)) {
+        if (!TextUtils.isEmpty(iconUrl)) {
             Picasso.with(getContext()).load(iconUrl).into(weatherIcon);
         }
         handleOptionalStrip(weatherInfo.getCloudiness(), infoStripCloudiness, cloudText);
@@ -102,7 +126,26 @@ public class DailyForecastLayout extends ScrollView implements RatingBar.OnRatin
     }
 
     @Override
-    public void onRatingChanged(RatingBar ratingBar, float value, boolean byUser) {
-        resetForecastInfo();
+    public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
+        if (forecast.isToday()) {
+            if (value < dateHandler.getCurrentHourOfDay() / STEP_SIZE) {
+                timelineChooser.setProgress(dateHandler.getCurrentHourOfDay() / STEP_SIZE);
+                resetForecastInfo(0);
+            } else {
+                resetForecastInfo(value - dateHandler.getCurrentHourOfDay() / STEP_SIZE);
+            }
+        } else {
+            resetForecastInfo(value);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

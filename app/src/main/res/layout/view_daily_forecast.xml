@@ -14,15 +14,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RatingBar
-            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        <SeekBar
             android:id="@+id/timeline_chooser"
+            style="@style/Base.Widget.AppCompat.SeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing"
-            android:max="24"
-            android:scrollbarAlwaysDrawHorizontalTrack="true"
-            android:stepSize="3" />
+            android:max="8"
+            />
+
+        <TextView
+            android:id="@+id/timeline_label"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            tools:text="@string/now" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,8 +61,7 @@
                 android:id="@+id/weather_icon"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="fitCenter"
-                />
+                android:scaleType="fitCenter" />
         </LinearLayout>
 
         <LinearLayout
