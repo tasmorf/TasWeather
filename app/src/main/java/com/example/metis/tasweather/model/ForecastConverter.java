@@ -7,6 +7,7 @@ import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.bean.DayForecast;
 import com.example.metis.tasweather.model.bean.Forecast;
 import com.example.metis.tasweather.model.bean.WeatherInfo;
+import com.example.metis.tasweather.model.bean.server.ServerCity;
 import com.example.metis.tasweather.model.bean.server.ServerForecast;
 import com.example.metis.tasweather.model.bean.server.ServerVolumeInfo;
 import com.example.metis.tasweather.model.bean.server.ServerWeatherDataPoint;
@@ -42,7 +43,7 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
         List<DayForecast> forecastList = new ArrayList<>();
 
         int minIndex = 0;
-        if(dateHandler.getCurrentHourOfDay() > LAST_AVAILABLE_HOUR) {
+        if (dateHandler.getCurrentHourOfDay() > LAST_AVAILABLE_HOUR) {
             minIndex = 1;
         }
         for (int i = minIndex; i < MAX_DAYS_FORECAST; i++) {
@@ -89,7 +90,9 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
             forecastList.add(builder.build());
         }
 
+        ServerCity city = serverForecast.getCity();
         return Forecast.newBuilder()
+                .city(city.getName() + ", " + city.getCountry())
                 .forecastList(forecastList)
                 .build();
     }

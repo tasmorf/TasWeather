@@ -4,9 +4,11 @@ import java.util.List;
 
 public class Forecast {
 
+    private String city;
     private List<DayForecast> forecastList;
 
     private Forecast(Builder builder) {
+        city = builder.city;
         forecastList = builder.forecastList;
     }
 
@@ -18,11 +20,20 @@ public class Forecast {
         return forecastList;
     }
 
+    public String getCity() {
+        return city;
+    }
 
     public static final class Builder {
+        private String city;
         private List<DayForecast> forecastList;
 
         private Builder() {
+        }
+
+        public Builder city(String val) {
+            city = val;
+            return this;
         }
 
         public Builder forecastList(List<DayForecast> val) {

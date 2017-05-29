@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Forecast
         if (forecast == null) {
             showError();
         } else {
+            setTitle(getString(R.string.title_city, forecast.getCity()));
             pagerAdapter.setDaysForecast(forecast.getForecastList());
 
             progress.setVisibility(View.GONE);
