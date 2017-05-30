@@ -7,7 +7,7 @@ Ok, seriously now...
 This is a regular android project, all you need to do is run it either in Android Studio, or via gradle,
  using the following command:
 
- ``` gradlew assembleDebug ````
+ ``` gradlew assembleDebug ```
 
 ## Testing
 See my comment above for the 4 hours. I didn't have time to add either unit or UI tests. You will notice though, that the bulk of the logic
