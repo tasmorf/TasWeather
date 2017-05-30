@@ -13,7 +13,7 @@ This is a regular android project, all you need to do is run it either in Androi
 See my comment above for the 4 hours. I didn't have time to add either unit or UI tests. You will notice though, that the bulk of the logic
 is contained in a class called ```ForecastConverter```. This would be very simple to unit test. Since the server response has been converted into
 an easy to use client bean the UI logic is minimal. Again, the bulk of the view setting logic is in ```DailyForecastLayout```. An Espresso test
-with mock responses, and different devices times should be pretty simple to right.
+with mock responses, and different devices times should be pretty simple to write.
 
 ## If I had more time...
 There are tons of things I'd do:
