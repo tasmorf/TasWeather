@@ -21,7 +21,7 @@ public class JodaDateHandler implements DateHandler {
 
     @Override
     public int getDaysOffsetForTimestamp(long timestamp) {
-        return Days.daysBetween(DateTime.now(), new DateTime(timestamp * 1000, DateTimeZone.UTC)).getDays();
+        return new DateTime(timestamp * 1000, DateTimeZone.getDefault()).getDayOfYear() - DateTime.now().getDayOfYear();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JodaDateHandler implements DateHandler {
 
     @Override
     public String getTimeStringForTimeStamp(long timeStamp) {
-        return DateTimeFormat.forPattern("HH:mm").print(new DateTime(timeStamp * 1000, DateTimeZone.UTC).getHourOfDay() * MILLIS_IN_HOUR);
+        return DateTimeFormat.forPattern("HH:mm").print(new DateTime(timeStamp * 1000, DateTimeZone.getDefault()));
     }
 
     @Override
@@ -46,6 +46,6 @@ public class JodaDateHandler implements DateHandler {
 
     @Override
     public boolean isBeforeNow(long timestamp) {
-        return DateTime.now().isAfter(new DateTime(timestamp * 1000, DateTimeZone.UTC));
+        return DateTime.now().isAfter(new DateTime(timestamp * 1000, DateTimeZone.getDefault()));
     }
 }

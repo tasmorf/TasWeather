@@ -92,8 +92,7 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
         this.forecast = forecast;
         timelineChooser.setMax(HOURS_IN_DAY / STEP_SIZE - 1);
         if (forecast.isToday()) {
-            int todaysProgress = dateHandler.getCurrentHourOfDay() / STEP_SIZE;
-            timelineChooser.setProgress(todaysProgress);
+            timelineChooser.setProgress(todaysProgress());
         }
     }
 
@@ -129,15 +128,19 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
     @Override
     public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
         if (forecast.isToday()) {
-            if (value < dateHandler.getCurrentHourOfDay() / STEP_SIZE) {
-                timelineChooser.setProgress(dateHandler.getCurrentHourOfDay() / STEP_SIZE);
+            if (value < todaysProgress()) {
+                timelineChooser.setProgress(todaysProgress());
                 resetForecastInfo(0);
             } else {
-                resetForecastInfo(value - dateHandler.getCurrentHourOfDay() / STEP_SIZE);
+                resetForecastInfo(value - todaysProgress());
             }
         } else {
             resetForecastInfo(value);
         }
+    }
+
+    private int todaysProgress() {
+        return dateHandler.getCurrentHourOfDay() / STEP_SIZE + 1;
     }
 
     @Override
