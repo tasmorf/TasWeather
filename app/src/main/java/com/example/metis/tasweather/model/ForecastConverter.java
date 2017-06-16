@@ -32,7 +32,7 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
         List<DayForecast> forecastList = new ArrayList<>();
 
         int minIndex = 0;
-        if (dateHandler.getCurrentHourOfDay() > LAST_AVAILABLE_HOUR) {
+        if (dateHandler.getCurrentHourOfDay() >= LAST_AVAILABLE_HOUR) {
             minIndex = 1;
         }
         for (int i = minIndex; i < MAX_DAYS_FORECAST; i++) {
