@@ -8,8 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.metis.tasweather.R;
+import com.example.metis.tasweather.model.Converter;
 import com.example.metis.tasweather.model.ForecastService;
 import com.example.metis.tasweather.model.bean.Forecast;
+import com.example.metis.tasweather.model.bean.server.ServerForecast;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.Bind;
@@ -20,6 +22,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.example.metis.tasweather.module.PagerAdapterModule.dayPagerAdapter;
 import static com.example.metis.tasweather.module.RetrofitModule.forecastService;
+import static com.example.metis.tasweather.module.WeatherConverterModule.forecastConverter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,15 +36,17 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
     private final ForecastService forecastService;
+    private final Converter<ServerForecast, Forecast> forecastConverter;
     private final DayPagerAdapter pagerAdapter;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public MainActivity() {
-        this(forecastService(), dayPagerAdapter());
+        this(forecastService(), forecastConverter(), dayPagerAdapter());
     }
 
-    public MainActivity(ForecastService forecastService, DayPagerAdapter pagerAdapter) {
+    public MainActivity(ForecastService forecastService, Converter<ServerForecast, Forecast> forecastConverter, DayPagerAdapter pagerAdapter) {
         this.forecastService = forecastService;
+        this.forecastConverter = forecastConverter;
         this.pagerAdapter = pagerAdapter;
     }
 
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadData() {
         compositeDisposable.add(forecastService.getFiveDayForecast(getString(R.string.open_weather_app_id),
                 getString(R.string.city_id_athens))
+                .map(forecastConverter::convert)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleResponse, this::handleError));
@@ -80,23 +86,15 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setVisibility(View.GONE);
     }
 
-
     private void handleResponse(Forecast forecast) {
-        if (forecast == null) {
-            handleError(null);
-        } else {
-            setTitle(getString(R.string.title_city, forecast.getCity()));
-            pagerAdapter.setDaysForecast(forecast.getForecastList());
-
-            progress.setVisibility(View.GONE);
-            errorLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.VISIBLE);
-        }
+        setTitle(getString(R.string.title_city, forecast.getCity()));
+        pagerAdapter.setDaysForecast(forecast.getForecastList());
+        progress.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
+        viewPager.setVisibility(View.VISIBLE);
     }
 
-
     private void handleError(Throwable throwable) {
-
         progress.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
         viewPager.setVisibility(View.GONE);

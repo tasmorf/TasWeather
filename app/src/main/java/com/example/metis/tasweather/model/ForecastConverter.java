@@ -11,33 +11,24 @@ import com.example.metis.tasweather.model.bean.server.ServerForecast;
 import com.example.metis.tasweather.model.bean.server.ServerVolumeInfo;
 import com.example.metis.tasweather.model.bean.server.ServerWeatherDataPoint;
 import com.example.metis.tasweather.model.bean.server.ServerWindInfo;
-import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Converter;
-
-
-class ForecastConverter implements Converter<ResponseBody, Forecast> {
+public class ForecastConverter implements Converter<ServerForecast, Forecast> {
     private static final int MAX_DAYS_FORECAST = 5;
     private static final int LAST_AVAILABLE_HOUR = 21;
-    private final Gson gson;
     private final Resources resources;
     private final DateHandler dateHandler;
-    public static final String[] DIRECTIONS = new String[]{"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+    private static final String[] DIRECTIONS = new String[]{"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
 
-    public ForecastConverter(Gson gson, Resources resources, DateHandler dateHandler) {
-        this.gson = gson;
+    public ForecastConverter(Resources resources, DateHandler dateHandler) {
         this.resources = resources;
         this.dateHandler = dateHandler;
     }
 
     @Override
-    public Forecast convert(ResponseBody value) throws IOException {
-        ServerForecast serverForecast = gson.fromJson(value.charStream(), ServerForecast.class);
+    public Forecast convert(ServerForecast serverForecast) throws ConversionException {
         List<DayForecast> forecastList = new ArrayList<>();
 
         int minIndex = 0;
@@ -95,5 +86,6 @@ class ForecastConverter implements Converter<ResponseBody, Forecast> {
                 .city(city.getName() + ", " + city.getCountry())
                 .forecastList(forecastList)
                 .build();
+
     }
 }
