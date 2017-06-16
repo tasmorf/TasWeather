@@ -22,6 +22,5 @@ There are tons of things I'd do:
 - Implement a search field in the toolbar for getting the forecast for different cities
 - Support landscape mode
 - Have a tablet layout
-- Implement caching (I'd probably override the http cache headers of the response for that)
 - Have an actual chart overlaid on the timepicker, with the temperature and precipitation for that time
 - Support different metric units
