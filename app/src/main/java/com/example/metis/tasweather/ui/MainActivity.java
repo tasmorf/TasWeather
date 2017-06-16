@@ -1,28 +1,27 @@
 package com.example.metis.tasweather.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.view.View;
 
 import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.ForecastService;
 import com.example.metis.tasweather.model.bean.Forecast;
+import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.example.metis.tasweather.module.PagerAdapterModule.dayPagerAdapter;
 import static com.example.metis.tasweather.module.RetrofitModule.forecastService;
 
-public class MainActivity extends AppCompatActivity implements Callback<Forecast> {
+public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.container)
     ViewPager viewPager;
@@ -35,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Forecast
 
     private final ForecastService forecastService;
     private final DayPagerAdapter pagerAdapter;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public MainActivity() {
         this(forecastService(), dayPagerAdapter());
@@ -53,19 +53,37 @@ public class MainActivity extends AppCompatActivity implements Callback<Forecast
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        loadData();
+        RxView.clicks(findViewById(R.id.retry_button)).subscribe(o -> loadData());
     }
 
-    @OnClick(R.id.retry_button)
-    public void onRetry() {
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadData();
     }
 
     @Override
-    public void onResponse(Call<Forecast> call, Response<Forecast> response) {
-        Forecast forecast = response.body();
+    protected void onStop() {
+        super.onStop();
+        compositeDisposable.clear();
+    }
+
+    private void loadData() {
+        compositeDisposable.add(forecastService.getFiveDayForecast(getString(R.string.open_weather_app_id),
+                getString(R.string.city_id_athens))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleResponse, this::handleError));
+
+        progress.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.GONE);
+        viewPager.setVisibility(View.GONE);
+    }
+
+
+    private void handleResponse(Forecast forecast) {
         if (forecast == null) {
-            showError();
+            handleError(null);
         } else {
             setTitle(getString(R.string.title_city, forecast.getCity()));
             pagerAdapter.setDaysForecast(forecast.getForecastList());
@@ -76,25 +94,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Forecast
         }
     }
 
-    @Override
-    public void onFailure(Call<Forecast> call, Throwable t) {
-        showError();
-    }
 
-    private void showError() {
+    private void handleError(Throwable throwable) {
+
         progress.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
         viewPager.setVisibility(View.GONE);
     }
-
-    private void loadData() {
-        forecastService.getFiveDayForecast(getString(R.string.open_weather_app_id),
-                getString(R.string.city_id_athens)).enqueue(this);
-
-        progress.setVisibility(View.VISIBLE);
-        errorLayout.setVisibility(View.GONE);
-        viewPager.setVisibility(View.GONE);
-    }
-
 }
 

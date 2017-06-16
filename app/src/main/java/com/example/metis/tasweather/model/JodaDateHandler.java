@@ -12,7 +12,6 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 
 public class JodaDateHandler implements DateHandler {
-    private static final long MILLIS_IN_HOUR = 60 * 60 * 1000;
     private Resources resources;
 
     public JodaDateHandler(Resources resources) {

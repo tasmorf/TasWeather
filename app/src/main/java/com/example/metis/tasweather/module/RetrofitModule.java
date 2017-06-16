@@ -5,6 +5,7 @@ import com.example.metis.tasweather.model.ForecastService;
 import com.example.metis.tasweather.model.WeatherConverterFactory;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import static com.example.metis.tasweather.module.ApplicationModule.resources;
 import static com.example.metis.tasweather.module.DateHandlerModule.jodaDateHandler;
@@ -24,6 +25,7 @@ public class RetrofitModule {
                     .addConverterFactory(weatherConverterFactory())
                     .client(okHttpClient())
                     .baseUrl(resources().getString(R.string.open_weather_api_endpoint))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
         }
         return openWeatherRetrofit;
