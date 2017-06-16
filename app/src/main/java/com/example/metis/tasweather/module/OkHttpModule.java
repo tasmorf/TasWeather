@@ -38,6 +38,7 @@ public class OkHttpModule {
 
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            builder.addInterceptor(loggingInterceptor);
 
             sOkHttpClient = builder.build();
 
