@@ -11,7 +11,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.metis.tasweather.R;
-import com.example.metis.tasweather.model.DateHandler;
 import com.example.metis.tasweather.model.bean.DayForecast;
 import com.example.metis.tasweather.model.bean.WeatherInfo;
 import com.squareup.picasso.Picasso;
@@ -19,15 +18,13 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.example.metis.tasweather.module.DateHandlerModule.jodaDateHandler;
-
 /**
  * A View representing the forecast for a single day.
  */
 public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBarChangeListener {
 
-    public static final int STEP_SIZE = 3;
-    private static final int HOURS_IN_DAY = 24;
+    private static final int FORECAST_STEP_SIZE = 3;
+    private static final int DATA_POINTS_PER_DAY = 8;
     @Bind(R.id.timeline_label)
     TextView timelineLabel;
     @Bind(R.id.timeline_chooser)
@@ -57,27 +54,18 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
     @Bind(R.id.humidity)
     TextView humidityText;
 
-    private DateHandler dateHandler;
-
     private DayForecast forecast;
 
     public DailyForecastLayout(Context context) {
         super(context);
-        init(jodaDateHandler());
     }
 
     public DailyForecastLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(jodaDateHandler());
     }
 
     public DailyForecastLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(jodaDateHandler());
-    }
-
-    private void init(DateHandler dateHandler) {
-        this.dateHandler = dateHandler;
     }
 
     @Override
@@ -85,15 +73,40 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
         super.onFinishInflate();
         ButterKnife.bind(this);
         timelineChooser.setOnSeekBarChangeListener(this);
-        timelineChooser.setKeyProgressIncrement(STEP_SIZE);
+        timelineChooser.setKeyProgressIncrement(FORECAST_STEP_SIZE);
     }
 
     public void setForecast(DayForecast forecast) {
         this.forecast = forecast;
-        timelineChooser.setMax(HOURS_IN_DAY / STEP_SIZE - 1);
         if (forecast.isToday()) {
             timelineChooser.setProgress(todaysProgress());
+        } else {
+            resetForecastInfo(0);
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
+        if (forecast.isToday()) {
+            if (value < todaysProgress()) {
+                timelineChooser.setProgress(todaysProgress());
+                resetForecastInfo(0);
+            } else {
+                resetForecastInfo(value - todaysProgress());
+            }
+        } else {
+            resetForecastInfo(value);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 
     private void resetForecastInfo(int value) {
@@ -125,31 +138,7 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
         }
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int value, boolean fromUser) {
-        if (forecast.isToday()) {
-            if (value < todaysProgress()) {
-                timelineChooser.setProgress(todaysProgress());
-                resetForecastInfo(0);
-            } else {
-                resetForecastInfo(value - todaysProgress());
-            }
-        } else {
-            resetForecastInfo(value);
-        }
-    }
-
     private int todaysProgress() {
-        return dateHandler.getCurrentHourOfDay() / STEP_SIZE + 1;
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
+        return DATA_POINTS_PER_DAY - forecast.getHourlyWeatherInfos().size();
     }
 }
