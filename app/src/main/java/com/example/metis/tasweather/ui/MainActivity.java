@@ -26,6 +26,7 @@ import static com.example.metis.tasweather.module.WeatherConverterModule.forecas
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String SELECTED_DAY = "selectedDay";
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.error_layout)
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final Converter<ServerForecast, Forecast> forecastConverter;
     private final DayPagerAdapter pagerAdapter;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private int selectedDay;
 
     public MainActivity() {
         this(forecastService(), forecastConverter(), dayPagerAdapter());
@@ -73,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
         compositeDisposable.clear();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(SELECTED_DAY, viewPager.getCurrentItem());
+    }
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        selectedDay = savedInstanceState.getInt(SELECTED_DAY);
+    }
+
     private void loadData() {
         compositeDisposable.add(forecastService.getFiveDayForecast(getString(R.string.open_weather_app_id),
                 getString(R.string.city_id_athens))
@@ -92,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         progress.setVisibility(View.GONE);
         errorLayout.setVisibility(View.GONE);
         viewPager.setVisibility(View.VISIBLE);
+        viewPager.setCurrentItem(selectedDay);
     }
 
     private void handleError(Throwable throwable) {

@@ -1,6 +1,7 @@
 package com.example.metis.tasweather.ui;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -74,6 +75,11 @@ public class DailyForecastLayout extends ScrollView implements SeekBar.OnSeekBar
         ButterKnife.bind(this);
         timelineChooser.setOnSeekBarChangeListener(this);
         timelineChooser.setKeyProgressIncrement(FORECAST_STEP_SIZE);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        return super.onSaveInstanceState();
     }
 
     public void setForecast(DayForecast forecast) {

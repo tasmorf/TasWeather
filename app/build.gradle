@@ -41,6 +41,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.nightlynexus.viewstatepageradapter:viewstatepageradapter:1.0.4'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.robolectric:robolectric:3.3.2'

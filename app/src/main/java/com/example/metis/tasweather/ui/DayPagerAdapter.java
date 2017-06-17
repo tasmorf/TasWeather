@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.bean.DayForecast;
+import com.nightlynexus.viewstatepageradapter.ViewStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * This adapter shows a different view per day
  */
-public class DayPagerAdapter extends PagerAdapter {
+public class DayPagerAdapter extends ViewStatePagerAdapter {
 
     private List<DayForecast> dayForecasts = new ArrayList<>();
 
@@ -25,22 +26,11 @@ public class DayPagerAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, final int position) {
+    protected View createView(ViewGroup container, int position) {
         Context context = container.getContext();
         DailyForecastLayout view = (DailyForecastLayout) LayoutInflater.from(context).inflate(R.layout.view_daily_forecast, container, false);
         view.setForecast(dayForecasts.get(position));
-        container.addView(view);
         return view;
-    }
-
-    @Override
-    public void destroyItem(final ViewGroup container, final int position, final Object object) {
-        container.removeView((View) object);
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
     }
 
     @Override
