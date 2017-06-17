@@ -6,6 +6,16 @@ public class ServerMainWeatherInfo {
     private int humidity;
     private double pressure;
 
+    public ServerMainWeatherInfo() {
+        // required for Gson
+    }
+
+    public ServerMainWeatherInfo(double temp, int humidity, double pressure) {
+        this.temp = temp;
+        this.humidity = humidity;
+        this.pressure = pressure;
+    }
+
     public double getTemp() {
         return temp;
     }

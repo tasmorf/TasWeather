@@ -21,6 +21,22 @@ public class ServerWeatherDataPoint {
     @SerializedName("weather")
     private List<ServerOverallWeatherInfo> overallWeather;
 
+    // needed for Gson
+    public ServerWeatherDataPoint() {
+
+    }
+
+    public ServerWeatherDataPoint(long timestamp, ServerMainWeatherInfo main, ServerCloudsInfo clouds, ServerWindInfo wind, ServerVolumeInfo rain, ServerVolumeInfo snow, List<ServerOverallWeatherInfo> overallWeather) {
+        this.timestamp = timestamp;
+        this.main = main;
+        this.clouds = clouds;
+        this.wind = wind;
+        this.rain = rain;
+        this.snow = snow;
+        this.overallWeather = overallWeather;
+    }
+
+
     public long getTimestamp() {
         return timestamp;
     }

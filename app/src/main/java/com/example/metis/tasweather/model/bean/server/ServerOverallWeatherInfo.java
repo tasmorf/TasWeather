@@ -10,6 +10,17 @@ public class ServerOverallWeatherInfo {
 
     private String main;
 
+    public ServerOverallWeatherInfo() {
+        // required for Gson
+    }
+
+    public ServerOverallWeatherInfo(String id, String icon, String description, String main) {
+        this.id = id;
+        this.icon = icon;
+        this.description = description;
+        this.main = main;
+    }
+
     public String getId() {
         return id;
     }

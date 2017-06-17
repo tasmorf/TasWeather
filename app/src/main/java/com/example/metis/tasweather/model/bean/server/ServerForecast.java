@@ -13,6 +13,15 @@ public class ServerForecast {
     @SerializedName("city")
     private ServerCity city;
 
+    // required for Gson
+    public ServerForecast() {
+
+    }
+
+    public ServerForecast(List<ServerWeatherDataPoint> weatherDataPoints, ServerCity city) {
+        this.weatherDataPoints = weatherDataPoints;
+        this.city = city;
+    }
 
     public List<ServerWeatherDataPoint> getWeatherDataPoints() {
         return weatherDataPoints;

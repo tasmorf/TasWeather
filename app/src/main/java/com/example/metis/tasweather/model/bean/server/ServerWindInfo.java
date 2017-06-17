@@ -7,6 +7,15 @@ public class ServerWindInfo {
 
     private double deg;
 
+    public ServerWindInfo() {
+        // required for Gson
+    }
+
+    public ServerWindInfo(double speed, double deg) {
+        this.speed = speed;
+        this.deg = deg;
+    }
+
     public double getSpeed() {
         return speed;
     }
