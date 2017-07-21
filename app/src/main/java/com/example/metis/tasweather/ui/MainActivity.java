@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Forecast forecast) {
+        if(forecast == null) {
+            handleError(null);
+            return;
+        }
         setTitle(getString(R.string.title_city, forecast.getCity()));
         pagerAdapter.setDaysForecast(forecast.getForecastList());
         progress.setVisibility(View.GONE);

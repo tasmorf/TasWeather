@@ -28,6 +28,9 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
 
     @Override
     public Forecast convert(ServerForecast serverForecast) throws ConversionException {
+        if(serverForecast == null) {
+            return null;
+        }
         RealmList<DayForecast> forecastList = new RealmList<>();
 
         int minIndex = 0;

@@ -7,6 +7,7 @@ import com.example.metis.tasweather.model.bean.realm.Forecast;
 import com.example.metis.tasweather.model.bean.server.ServerForecast;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 import retrofit2.http.Query;
@@ -29,12 +30,12 @@ public class ForecastRealmRetrofitRepository implements ForecastRepository {
     public Flowable<Forecast> getFiveDayForecast(@Query("id") String cityId) {
         Forecast cachedRealmForecast = realm.where(Forecast.class).findFirst();
         return forecastService.getFiveDayForecast(res.getString(R.string.open_weather_app_id), cityId)
+                .onErrorReturn((Throwable e) -> null)
                 .map(forecastConverter::convert)
                 .toFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((forecast) -> realm.executeTransactionAsync(instance -> instance.copyToRealm(forecast)))
                 .mergeWith(cachedRealmForecast == null ? Flowable.empty() : Flowable.just(cachedRealmForecast));
     }
-
 
 }
