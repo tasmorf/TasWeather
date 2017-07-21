@@ -1,10 +1,12 @@
 package com.example.metis.tasweather.model;
 
+import android.app.Application;
 import android.content.res.Resources;
 
 import com.example.metis.tasweather.BuildConfig;
-import com.example.metis.tasweather.model.bean.Forecast;
-import com.example.metis.tasweather.model.bean.WeatherInfo;
+import com.example.metis.tasweather.WeatherApplication;
+import com.example.metis.tasweather.model.bean.realm.Forecast;
+import com.example.metis.tasweather.model.bean.realm.WeatherInfo;
 import com.example.metis.tasweather.model.bean.server.ServerCity;
 import com.example.metis.tasweather.model.bean.server.ServerCloudsInfo;
 import com.example.metis.tasweather.model.bean.server.ServerForecast;
@@ -30,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@Config(application = Application.class, constants = BuildConfig.class, sdk = 21)
 public class ForecastConverterTest {
 
     private static final String A_CITY_NAME = "aCityName";

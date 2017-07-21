@@ -12,8 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.metis.tasweather.R;
-import com.example.metis.tasweather.model.bean.DayForecast;
-import com.example.metis.tasweather.model.bean.WeatherInfo;
+import com.example.metis.tasweather.model.bean.realm.DayForecast;
+import com.example.metis.tasweather.model.bean.realm.WeatherInfo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;

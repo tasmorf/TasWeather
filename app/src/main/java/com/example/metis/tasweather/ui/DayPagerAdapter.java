@@ -1,13 +1,12 @@
 package com.example.metis.tasweather.ui;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.metis.tasweather.R;
-import com.example.metis.tasweather.model.bean.DayForecast;
+import com.example.metis.tasweather.model.bean.realm.DayForecast;
 import com.nightlynexus.viewstatepageradapter.ViewStatePagerAdapter;
 
 import java.util.ArrayList;

@@ -5,12 +5,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.metis.tasweather.R;
 import com.example.metis.tasweather.model.ForecastRepository;
-import com.example.metis.tasweather.model.bean.Forecast;
-import com.example.metis.tasweather.module.RepositoryModule;
+import com.example.metis.tasweather.model.bean.realm.DayForecast;
+import com.example.metis.tasweather.model.bean.realm.Forecast;
+import com.example.metis.tasweather.model.bean.realm.WeatherInfo;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import butterknife.Bind;
@@ -18,15 +20,16 @@ import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
 
 import static com.example.metis.tasweather.module.PagerAdapterModule.dayPagerAdapter;
+import static com.example.metis.tasweather.module.RealmModule.realm;
 import static com.example.metis.tasweather.module.RepositoryModule.forecastRealmRetrofitRepository;
-import static com.example.metis.tasweather.module.RetrofitModule.forecastService;
-import static com.example.metis.tasweather.module.ConverterModule.forecastConverter;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String SELECTED_DAY = "selectedDay";
+    private static final String TAG = "REALM";
     @Bind(R.id.container)
     ViewPager viewPager;
     @Bind(R.id.error_layout)
@@ -38,16 +41,18 @@ public class MainActivity extends AppCompatActivity {
 
     private final ForecastRepository forecastRepository;
     private final DayPagerAdapter pagerAdapter;
+    private Realm realm;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private int selectedDay;
 
     public MainActivity() {
-        this(forecastRealmRetrofitRepository(), dayPagerAdapter());
+        this(forecastRealmRetrofitRepository(), dayPagerAdapter(), realm());
     }
 
-    public MainActivity(ForecastRepository forecastRepository, DayPagerAdapter pagerAdapter) {
+    public MainActivity(ForecastRepository forecastRepository, DayPagerAdapter pagerAdapter, Realm realm) {
         this.forecastRepository = forecastRepository;
         this.pagerAdapter = pagerAdapter;
+        this.realm = realm;
     }
 
     @Override

@@ -3,17 +3,16 @@ package com.example.metis.tasweather.model;
 import android.content.res.Resources;
 
 import com.example.metis.tasweather.R;
-import com.example.metis.tasweather.model.bean.DayForecast;
-import com.example.metis.tasweather.model.bean.Forecast;
-import com.example.metis.tasweather.model.bean.WeatherInfo;
+import com.example.metis.tasweather.model.bean.realm.DayForecast;
+import com.example.metis.tasweather.model.bean.realm.Forecast;
+import com.example.metis.tasweather.model.bean.realm.WeatherInfo;
 import com.example.metis.tasweather.model.bean.server.ServerCity;
 import com.example.metis.tasweather.model.bean.server.ServerForecast;
 import com.example.metis.tasweather.model.bean.server.ServerVolumeInfo;
 import com.example.metis.tasweather.model.bean.server.ServerWeatherDataPoint;
 import com.example.metis.tasweather.model.bean.server.ServerWindInfo;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.realm.RealmList;
 
 public class ForecastConverter implements Converter<ServerForecast, Forecast> {
     private static final int MAX_DAYS_FORECAST = 5;
@@ -29,17 +28,17 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
 
     @Override
     public Forecast convert(ServerForecast serverForecast) throws ConversionException {
-        List<DayForecast> forecastList = new ArrayList<>();
+        RealmList<DayForecast> forecastList = new RealmList<>();
 
         int minIndex = 0;
         if (dateHandler.getCurrentHourOfDay() >= LAST_AVAILABLE_HOUR) {
             minIndex = 1;
         }
         for (int i = minIndex; i < MAX_DAYS_FORECAST; i++) {
-            DayForecast.Builder builder = DayForecast.newBuilder()
-                    .title(dateHandler.getDayOfWeekFromOffset(i))
-                    .isToday(i == 0);
-            List<WeatherInfo> weatherInfoList = new ArrayList<>();
+            DayForecast dayForecast = new DayForecast();
+            dayForecast.setTitle(dateHandler.getDayOfWeekFromOffset(i));
+            dayForecast.setToday(i == 0);
+            RealmList<WeatherInfo> weatherInfoList = new RealmList<>();
             for (ServerWeatherDataPoint serverWeatherDataPoint : serverForecast.getWeatherDataPoints()) {
                 if (dateHandler.getDaysOffsetForTimestamp(serverWeatherDataPoint.getTimestamp()) != i
                         || dateHandler.isBeforeNow(serverWeatherDataPoint.getTimestamp())) {
@@ -51,41 +50,40 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
                 int humidity = serverWeatherDataPoint.getMain().getHumidity();
                 double pressure = serverWeatherDataPoint.getMain().getPressure();
 
-                WeatherInfo.Builder weatherInfoBuilder = WeatherInfo.newBuilder()
-                        .mainTemp(String.format("%.1f", temp))
-                        .time(dateHandler.getTimeStringForTimeStamp(serverWeatherDataPoint.getTimestamp()))
-                        .iconUrl(resources.getString(R.string.icon_url, serverWeatherDataPoint.getOverallWeather().get(0).getIcon()))
-                        .cloudiness(resources.getString(R.string.percentage_int, cloudiness))
-                        .humidity(resources.getString(R.string.percentage_int, humidity))
-                        .pressureInfo(resources.getString(R.string.pressure_with_units, pressure));
+                WeatherInfo weatherInfo = new WeatherInfo();
+                weatherInfo.setMainTemp(String.format("%.1f", temp));
+                weatherInfo.setTime(dateHandler.getTimeStringForTimeStamp(serverWeatherDataPoint.getTimestamp()));
+                weatherInfo.setIconUrl(resources.getString(R.string.icon_url, serverWeatherDataPoint.getOverallWeather().get(0).getIcon()));
+                weatherInfo.setCloudiness(resources.getString(R.string.percentage_int, cloudiness));
+                weatherInfo.setHumidity(resources.getString(R.string.percentage_int, humidity));
+                weatherInfo.setPressureInfo(resources.getString(R.string.pressure_with_units, pressure));
 
                 ServerVolumeInfo rain = serverWeatherDataPoint.getRain();
                 if (rain != null) {
-                    weatherInfoBuilder.rainVolume(resources.getString(R.string.volume_with_units, rain.getVolume()));
+                    weatherInfo.setRainVolume(resources.getString(R.string.volume_with_units, rain.getVolume()));
                 }
 
                 ServerVolumeInfo snow = serverWeatherDataPoint.getSnow();
                 if (snow != null) {
-                    weatherInfoBuilder.snowVolume(resources.getString(R.string.volume_with_units, snow.getVolume()));
+                    weatherInfo.setSnowVolume(resources.getString(R.string.volume_with_units, snow.getVolume()));
                 }
 
                 ServerWindInfo windInfo = serverWeatherDataPoint.getWind();
                 if (windInfo != null) {
                     String direction = DIRECTIONS[(int) Math.round(((windInfo.getDeg() % 360) / 45)) % 8];
-                    weatherInfoBuilder.windInfo(resources.getString(R.string.wind_info, direction, windInfo.getSpeed()));
+                    weatherInfo.setWindInfo(resources.getString(R.string.wind_info, direction, windInfo.getSpeed()));
                 }
                 // This data point belongs to this offset
-                weatherInfoList.add(weatherInfoBuilder.build());
+                weatherInfoList.add(weatherInfo);
             }
-            builder.hourlyWeatherInfos(weatherInfoList);
-            forecastList.add(builder.build());
+            dayForecast.setHourlyWeatherInfos(weatherInfoList);
+            forecastList.add(dayForecast);
         }
 
         ServerCity city = serverForecast.getCity();
-        return Forecast.newBuilder()
-                .city(city.getName() + ", " + city.getCountry())
-                .forecastList(forecastList)
-                .build();
-
+        Forecast result = new Forecast();
+        result.setCity(city.getName() + ", " + city.getCountry());
+        result.setForecastList(forecastList);
+        return result;
     }
 }
