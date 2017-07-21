@@ -13,8 +13,9 @@ import com.example.metis.tasweather.model.bean.server.ServerWeatherDataPoint;
 import com.example.metis.tasweather.model.bean.server.ServerWindInfo;
 
 import io.realm.RealmList;
+import retrofit2.Response;
 
-public class ForecastConverter implements Converter<ServerForecast, Forecast> {
+public class ForecastConverter implements Converter<Response<ServerForecast>, Forecast> {
     private static final int MAX_DAYS_FORECAST = 5;
     private static final int LAST_AVAILABLE_HOUR = 21;
     private final Resources resources;
@@ -27,10 +28,13 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
     }
 
     @Override
-    public Forecast convert(ServerForecast serverForecast) throws ConversionException {
-        if(serverForecast == null) {
-            return null;
+    public Forecast convert(Response<ServerForecast> serverForecastResponse) throws ConversionException {
+        Forecast result = new Forecast();
+        if(!serverForecastResponse.isSuccessful()) {
+            result.setError(true);
+            return result;
         }
+        ServerForecast serverForecast = serverForecastResponse.body();
         RealmList<DayForecast> forecastList = new RealmList<>();
 
         int minIndex = 0;
@@ -84,7 +88,7 @@ public class ForecastConverter implements Converter<ServerForecast, Forecast> {
         }
 
         ServerCity city = serverForecast.getCity();
-        Forecast result = new Forecast();
+
         result.setCity(city.getName() + ", " + city.getCountry());
         result.setForecastList(forecastList);
         return result;

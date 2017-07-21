@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handleResponse(Forecast forecast) {
-        if(forecast == null) {
+        if(forecast.isError()) {
             handleError(null);
             return;
         }

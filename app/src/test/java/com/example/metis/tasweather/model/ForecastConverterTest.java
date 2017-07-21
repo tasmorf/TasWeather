@@ -28,7 +28,12 @@ import org.robolectric.annotation.Config;
 import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -63,6 +68,12 @@ public class ForecastConverterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         converter = new ForecastConverter(resources, dateHandler);
+    }
+
+    @Test
+    public void errorResponseReturnsError() throws ConversionException {
+        Forecast result = converter.convert(Response.error(404, ResponseBody.create(MediaType.parse("text"), "")));
+        assertTrue(result.isError());
     }
 
     @Test
@@ -148,7 +159,7 @@ public class ForecastConverterTest {
     }
 
     private Forecast convert() throws ConversionException {
-        return converter.convert(new ServerForecast(DATA_POINT_LIST, A_CITY));
+        return converter.convert(Response.success(new ServerForecast(DATA_POINT_LIST, A_CITY)));
     }
 
 }
