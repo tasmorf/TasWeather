@@ -17,7 +17,7 @@ public class RetrofitModule {
         return openWeatherRetrofit().create(ForecastService.class);
     }
 
-    public static Retrofit openWeatherRetrofit() {
+    private static Retrofit openWeatherRetrofit() {
         if (openWeatherRetrofit == null) {
             openWeatherRetrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
