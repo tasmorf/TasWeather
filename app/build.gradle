@@ -11,7 +11,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.metis.tasweather.util.WeatherTestRunner"
     }
     buildTypes {
         release {
@@ -51,10 +51,25 @@ dependencies {
     testCompile 'com.squareup.assertj:assertj-android:1.1.1'
 
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.8.0'
+    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+    androidTestCompile 'com.jraska:falcon:1.0.0'
 }
-
 
 configurations {
     testCompile.exclude group: 'com.android.support', module: 'support-annotations'
+
+    androidTestCompile.exclude group: 'com.android.support', module: 'support-v4'
+    androidTestCompile.exclude group: 'com.android.support', module: 'design'
+    androidTestCompile.exclude group: 'com.android.support', module: 'recyclerview-v7'
+    androidTestCompile.exclude group: 'com.android.support', module: 'appcompat-v7'
     androidTestCompile.exclude group: 'com.android.support', module: 'support-annotations'
+    androidTestCompile.exclude group: 'com.google.guava', module: 'guava'
+    androidTestCompile.exclude group: 'com.squareup.okhttp', module: 'okhttp'
+    androidTestCompile.exclude group: 'com.squareup.okio', module: 'okio'
 }
